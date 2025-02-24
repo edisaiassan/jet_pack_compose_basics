@@ -1,7 +1,7 @@
 package com.example.myapplication.presentation.pages.plant
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,14 +18,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.myapplication.presentation.pages.plant.sub_routes.plant.view_model.state.PlantState
+import com.example.myapplication.domain.use_case.plant.GetPlantsUseCase
 import com.example.myapplication.presentation.pages.plant.view_model.PlantsViewModel
+import com.example.myapplication.presentation.pages.plant.view_model.PlantsViewModelFactory
 import com.example.myapplication.presentation.pages.plant.view_model.state.PlantsState
 
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun PlantsPage(viewModel: PlantsViewModel = viewModel()) {
+fun PlantsPage(getPlantsUseCase: GetPlantsUseCase) {
+    val viewModel: PlantsViewModel = viewModel(factory = PlantsViewModelFactory(getPlantsUseCase))
     val state by viewModel.state.collectAsState()
 
     //GetPlants
@@ -39,7 +41,7 @@ fun PlantsPage(viewModel: PlantsViewModel = viewModel()) {
         }
     ) { paddingValues ->
         LazyColumn(
-            modifier = Modifier.padding(paddingValues),
+            modifier = Modifier.padding(paddingValues).fillMaxWidth(),
             contentPadding = PaddingValues(16.dp)
         ) {
             when(state) {
@@ -62,7 +64,7 @@ fun PlantsPage(viewModel: PlantsViewModel = viewModel()) {
                 is PlantsState.Success -> {
                     val plants = (state as PlantsState.Success).plants
                     items(plants) {plant ->
-                        Text(plant.toString())
+                        Text(plant.name)
                     }
                 }
             }

@@ -1,6 +1,7 @@
 package com.example.myapplication.presentation.pages.plant.view_model
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.domain.use_case.plant.GetPlantsUseCase
 import com.example.myapplication.presentation.pages.plant.view_model.state.PlantsState
@@ -14,12 +15,23 @@ class PlantsViewModel(private val getPlantsUseCase: GetPlantsUseCase) : ViewMode
 
     fun getPlants() {
         viewModelScope.launch {
-            getPlantsUseCase().collect { result ->
+            getPlantsUseCase().collect {result ->
                 _state.value = result.fold(
-                    onSuccess = {PlantsState.Success(it)},
-                    onFailure = {PlantsState.Error(it.localizedMessage ?: "Uknow Error")}
+                    left = {PlantsState.Error(it)},
+                    right = {PlantsState.Success(it)}
                 )
             }
         }
     }
 }
+
+class PlantsViewModelFactory(private val getPlantsUseCase: GetPlantsUseCase) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(PlantsViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return PlantsViewModel(getPlantsUseCase) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
