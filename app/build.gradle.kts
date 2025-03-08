@@ -70,4 +70,7 @@ dependencies {
     //Json
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
+
+    //Navhost
+    implementation(libs.androidx.navigation.compose)
 }
