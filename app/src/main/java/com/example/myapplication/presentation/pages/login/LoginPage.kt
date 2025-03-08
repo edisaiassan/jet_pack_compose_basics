@@ -19,12 +19,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.myapplication.presentation.pages.login.controller.LoginViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun LoginPage(viewModel: LoginViewModel = viewModel()) {
+fun LoginPage(navController: NavController, viewModel: LoginViewModel = viewModel()) {
 
     val state by viewModel.state.collectAsState()
     val corutine = rememberCoroutineScope()
@@ -62,6 +63,14 @@ fun LoginPage(viewModel: LoginViewModel = viewModel()) {
 
                 Button (
                     onClick = {
+                        navController.navigate("plant")
+                    },
+                ) {
+                    Text(text = "Iniciar Sesión")
+                }
+
+                /* Button (
+                    onClick = {
                         corutine.launch {
                             viewModel.onEnter()
                         }
@@ -73,7 +82,7 @@ fun LoginPage(viewModel: LoginViewModel = viewModel()) {
                     } else {
                         CircularProgressIndicator()
                     }
-                }
+                } */
             }
     }
     }

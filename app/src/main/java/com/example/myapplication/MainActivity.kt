@@ -17,6 +17,7 @@ import com.example.myapplication.data.remote.plant.RetrofitInstance
 import com.example.myapplication.data.repositories_implementation.PvzRepositoryImpl
 import com.example.myapplication.domain.use_case.plant.GetPlantsUseCase
 import com.example.myapplication.presentation.pages.plant.PlantsPage
+import com.example.myapplication.routes.NavigationWrapper
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
@@ -29,7 +30,8 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
-            PlantsPage(getPlantsUseCase)
+            NavigationWrapper()
+            //PlantsPage(getPlantsUseCase)
             //HomePage()
             /* MyApplicationTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
