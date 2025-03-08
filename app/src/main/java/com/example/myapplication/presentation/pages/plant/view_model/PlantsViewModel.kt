@@ -14,6 +14,7 @@ class PlantsViewModel(private val getPlantsUseCase: GetPlantsUseCase) : ViewMode
     val state = _state.asStateFlow()
 
     fun getPlants() {
+       _state.value = PlantsState.Loading
         viewModelScope.launch {
             getPlantsUseCase().collect {result ->
                 _state.value = result.fold(
